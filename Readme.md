@@ -25,4 +25,4 @@ install_github(repo="markkukuismin/MDSD")
 
 * `hub_detection_mdsd`: Compute the MDSD distance from the solution path information.
 * `hub_detection_plot`: Plots of the node degree with respect to the tuning parameter value or the MDSD values.
-* `cor_screening`: Thresholding of the absolute values of correlation coefficients (aka. lossy screening). One can also use the function `huge` from the `huge` package [link](https://cran.r-project.org/web/packages/huge/index.html). I faced with some memory leak issues while using `huge` so I made this.
+* `cor_screening`: Thresholding of the absolute values of correlation coefficients (aka. lossy screening). One can also use the function `huge` from the `huge` package ([link])(https://cran.r-project.org/web/packages/huge/index.html). I faced with some memory leak issues while using `huge` so I made this.
