@@ -1,11 +1,13 @@
 Package: MDSD
-Type: Package
-Title: What the Package Does (Title Case)
+Type: MDSD
+Title: Identify hubs using solution path information.
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Markku Kuismin
+Maintainer: Markku Kuismin <markku.kuismin@oulu.fi>
+Description: Computes the Mean Degree Squared Difference (MDSD) which can be used to hub detection.
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/markkukuismin/MDSD
+BugReports: https://github.com/markkukuismin/MDSD/issues
+RoxygenNote: 7.3.1
