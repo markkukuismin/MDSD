@@ -9,11 +9,13 @@
 #' @return A list containing array of sparse adjacency matrix estimates, and corresponding tuning parameter values.
 #'
 #' library(huge)
+#' library(igraph)
+#' library(MASS)
 #'
 #' n <- 100
 #' p <- 50
 #'
-#' Data <- huge.generator(n = n, d = p, graph = "hub")
+#' Data <- huge::huge.generator(n = n, d = p, graph = "hub")
 #'
 #' true_nmb_hubs <- ifelse(p > 40, ceiling(p/20), 2)
 #'
@@ -31,7 +33,7 @@
 #'
 #' diag(A_true) <- 0
 #'
-#' G_true <- igraph::graph_from_adjacency_matrix(A_true, mode = "undirected", diag = F)
+#' G_true <- igraph::graph_from_adjacency_matrix(A_true, mode = "undirected", diag = FALSE)
 #'
 #' node_names <- as.character(1:p)
 #'
