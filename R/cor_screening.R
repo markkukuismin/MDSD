@@ -8,6 +8,8 @@
 #'
 #' @return A list containing array of sparse adjacency matrix estimates, and corresponding tuning parameter values.
 #'
+#' @examples
+#'
 #' library(huge)
 #' library(igraph)
 #' library(MASS)

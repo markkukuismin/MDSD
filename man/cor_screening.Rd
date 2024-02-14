@@ -15,6 +15,11 @@ cor_screening(X, nlambda = NULL, lambda_min_ratio = NULL)
 }
 \value{
 A list containing array of sparse adjacency matrix estimates, and corresponding tuning parameter values.
+}
+\description{
+Computes a path of sparse adjacency matrix estimates using correlation thresholding
+}
+\examples{
 
 library(huge)
 library(igraph)
@@ -60,7 +65,5 @@ X = scale(X)
 nlambda = 70
 
 cor_path = cor_screening(X = X, nlambda = nlambda)
-}
-\description{
-Computes a path of sparse adjacency matrix estimates using correlation thresholding
+
 }
