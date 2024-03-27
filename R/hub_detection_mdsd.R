@@ -5,6 +5,7 @@
 #' @param sol_path a list containing an array \code{wi} of spare matrices and the corresponding tuning parameter values \code{rho_list}.
 #' @param node_names node names. If not provided, nodes are numbered from 1 to \code{ncol(sol_path$wi)}. Default \code{NULL}.
 #' @param gamma the multiplier of the 'outlier' cut-off value. Default value \code{3}.
+#' @param skew_thr the skewness threshold. Only a subset of models with estimated degree distribution skewness greater than \code{skew_thr} are inspected. Default value \code{0.5}.
 #'
 #' @return A list of potential hub nodes, MDSD distance values, and node degrees.
 #'
@@ -61,10 +62,14 @@
 #' @importFrom huge huge.generator
 #' @importFrom igraph graph_from_adjacency_matrix degree
 #' @importFrom MASS mvrnorm
+#' @importFrom e1071 skewness
+#' @importFrom rlang is_empty
 
-hub_detection_mdsd <- function(sol_path = NULL, node_names = NULL, gamma = NULL){
+hub_detection_mdsd <- function(sol_path = NULL, node_names = NULL, gamma = NULL, skew_thr = NULL){
 
   if(is.null(gamma)) gamma <- 3
+
+  if(is.null(skew_thr)) skew_thr <- 0.5
 
   p <- ncol(sol_path$wi)
 
@@ -107,10 +112,38 @@ hub_detection_mdsd <- function(sol_path = NULL, node_names = NULL, gamma = NULL)
 
   names(MDSD) <- rownames(Degree_lambda)
 
+  d_skewness = apply(Degree_lambda, 2, e1071::skewness)
+
+  d_skewness[is.na(d_skewness)] = 0
+
+  burn = which(d_skewness <= skew_thr)
+
+  if(!rlang::is_empty(burn)){
+
+    MDSD_burn = rep(0, p)
+
+    for(j in 1:p){
+
+      MDSD_burn[j] = mean((Degree_lambda[rep(j, p - 1), -burn] - Degree_lambda[-j, -burn])^2)
+
+    }
+
+  }else{
+
+    MDSD_burn = MDSD
+
+  }
+
+  names(MDSD_burn) <- rownames(Degree_lambda)
+
   hub_nodes_MDSD <- node_names[MDSD > gamma*mean(MDSD)]
 
+  hub_nodes_MDSD_burn <- node_names[MDSD_burn > gamma*mean(MDSD_burn)]
+
   return(list(hub_nodes_MDSD = hub_nodes_MDSD,
+              hub_nodes_MDSD_burn = hub_nodes_MDSD_burn,
               MDSD = MDSD,
+              MDSD_burn = MDSD_burn,
               Degree = Degree_lambda,
               lambda = lambda,
               node_names = node_names))

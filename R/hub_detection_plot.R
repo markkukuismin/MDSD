@@ -73,6 +73,7 @@ hub_detection_plot <- function(data = NULL, plot = TRUE){
   Degree <- NULL
   node <- NULL
   MDSD <- NULL
+  MDSD_burn <- NULL
 
   p <- nrow(data$Degree)
 
@@ -89,7 +90,8 @@ hub_detection_plot <- function(data = NULL, plot = TRUE){
                         lambda = lambdas)
 
   mdsd_data <- data.frame(node = node_names,
-                         MDSD = data$MDSD)
+                         MDSD = data$MDSD,
+                         MDSD_burn = data$MDSD_burn)
 
   p_degree <- ggplot2::ggplot(degree_data,
                               ggplot2::aes(x = lambda, y = Degree, group = node)
@@ -106,14 +108,25 @@ hub_detection_plot <- function(data = NULL, plot = TRUE){
     ) +
     ggplot2::ylab("MDSD value")
 
+  p_mdsd_burn <- ggplot(mdsd_data, ggplot2::aes(x = node, y = MDSD_burn)) +
+    ggplot2::geom_segment(
+      ggplot2::aes(x = node, xend = node, y = 0, yend = MDSD_burn)
+    ) +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(angle = 45, vjust = 1, hjust = 1)
+    ) +
+    ggplot2::ylab("MDSD value when skewness is considered")
+
   if(!plot) p_degree <- NULL
   if(!plot) p_mdsd <- NULL
+  if(!plot) p_mdsd_burn <- NULL
 
   results <- list(lambda = data$lambda,
                  degree_data = degree_data,
                  mdsd_data = mdsd_data,
                  degree_plot = p_degree,
-                 MDSD_plot = p_mdsd
+                 MDSD_plot = p_mdsd,
+                 MDSD_burn_plot = p_mdsd_burn
                  )
 
   return(results)

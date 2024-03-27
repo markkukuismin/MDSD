@@ -4,7 +4,12 @@
 \alias{hub_detection_mdsd}
 \title{hub_detection_mdsd}
 \usage{
-hub_detection_mdsd(sol_path = NULL, node_names = NULL, gamma = NULL)
+hub_detection_mdsd(
+  sol_path = NULL,
+  node_names = NULL,
+  gamma = NULL,
+  skew_thr = NULL
+)
 }
 \arguments{
 \item{sol_path}{a list containing an array \code{wi} of spare matrices and the corresponding tuning parameter values \code{rho_list}.}
@@ -12,6 +17,8 @@ hub_detection_mdsd(sol_path = NULL, node_names = NULL, gamma = NULL)
 \item{node_names}{node names. If not provided, nodes are numbered from 1 to \code{ncol(sol_path$wi)}. Default \code{NULL}.}
 
 \item{gamma}{the multiplier of the 'outlier' cut-off value. Default value \code{3}.}
+
+\item{skew_thr}{the skewness threshold. Only a subset of models with estimated degree distribution skewness greater than \code{skew_thr} are inspected. Default value \code{0.5}.}
 }
 \value{
 A list of potential hub nodes, MDSD distance values, and node degrees.
