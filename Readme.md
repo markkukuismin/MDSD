@@ -69,6 +69,8 @@ Function `hub_detection_mdsd` can be used with with any graphical model estimato
 * `wi`: an array of dimension `(p, p, nlambda)`
 * `rholist`: vector of tuning parameter values
 
+NOTE! The tuning parameter values should be in descending order!
+
 Here the graphical lasso estimator is used,
 ```r
 nlambda <- 50
@@ -216,3 +218,108 @@ thr <- gamma*mean(thr)
 D$MDSD_burn_plot + 
   geom_hline(yintercept = thr, linetype = "dashed")
 ```
+
+# Example 3
+
+Use hub graphical lasso with `MDSD` package,
+
+```r
+library(hglasso)
+library(mvtnorm)
+library(glasso)
+
+n <- 100
+p <- 100
+```
+
+Generate a super-hub network with 5 hubs,
+
+```r
+set.seed(1)
+network<-HubNetwork(p, 0.99, 5, 0.1)
+Theta <- network$Theta
+true_hubs <- network$hubcol
+```
+Generate data,
+
+```r
+x <- rmvnorm(n, rep(0,p), solve(Theta))
+x <- scale(x)
+```
+
+Run the hglasso algorithm and collect estimates of the precision matrix to object `wi`,
+
+```r
+nlambda <- 5
+skew_thr <- 0.5
+gamma <- 3.5
+
+lambda1s <- seq(0.5, 0.1, length.out = nlambda)
+
+wi <- array(0, c(p, p, nlambda))
+
+hubs_hglasso <- list()
+
+i <- 1
+
+for(lambda1 in lambda1s){
+  
+  res_hgls <- hglasso(cov(x), lambda1 = lambda1, 0.3, 1.5)
+  
+  hubs_hglasso[[i]] <- res_hgls$hubind
+  
+  wi[,, i] <- res_hgls$Theta
+
+  i = i + 1
+  
+}
+```
+
+The hglasso itself returns a list of potential hub nodes assuming that adequate tuning parameter values are used.
+
+```r
+hubs_hglasso
+sort(true_hubs)
+```
+
+We can again use the function `hub_detection_mdsd` so there is no need to select a single optimal tuning parameter value,
+```r
+sol_path_hgl <- list(wi = wi, rholist = lambda1s)
+
+mdsd_res <- hub_detection_mdsd(sol_path = sol_path_hgl,
+                               gamma = gamma,
+                               skew_thr = skew_thr)
+```
+
+The potential hub nodes found using the MDSD are saved in the object `mdsd_res`,
+```r
+mdsd_res$hub_nodes_MDSD
+```
+```
+[1] 19 23 31 36 82
+```
+
+```r
+mdsd_res$hub_nodes_MDSD_burn
+```
+```
+[1] 19 23 31 36 82
+```
+```r
+sort(true_hubs)
+```
+```
+[1] 19 23 31 53 82
+```
+
+```r
+D <- hub_detection_plot(data = mdsd_res)
+
+D$degree_plot
+```
+![](degree_hglasso.png)
+
+```r
+D$MDSD_plot
+```
+![](MDSD_hglasso.png)
