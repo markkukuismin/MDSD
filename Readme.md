@@ -97,8 +97,8 @@ Now the list `sol_path` can be used as an input for the function `hub_detection_
 
 In this following example, we set the threshold parameter `gamma` as 3 and disregard estimated graphical models with degree distribution skewness less than 0.5,
 ```r
-gamma = 3
-skew_thr = 0.5
+gamma <- 3
+skew_thr <- 0.5
 
 mdsd_res <- hub_detection_mdsd(sol_path = sol_path,
                                gamma = gamma,
@@ -172,11 +172,11 @@ From the plot `D$MDSD_burn_plot` one can see how the MDSD values of the true hub
 
 Add a horizontal line to the plot to illustrate the cut-off value `3MDSD_p`.
 ```r
-MDSD_data = D$mdsd_data
+MDSD_data <- D$mdsd_data
 
-thr = MDSD_data$MDSD_burn
+thr <- MDSD_data$MDSD_burn
 
-thr = gamma*mean(thr)
+thr <- gamma*mean(thr)
 
 D$MDSD_burn_plot + 
   geom_hline(yintercept = thr, linetype = "dashed")
@@ -207,11 +207,11 @@ D$degree_plot
 
 D$MDSD_plot
 
-MDSD_data = D$mdsd_data
+MDSD_data <- D$mdsd_data
 
-thr = MDSD_data$MDSD_burn
+thr <- MDSD_data$MDSD_burn
 
-thr = gamma*mean(thr)
+thr <- gamma*mean(thr)
 
 D$MDSD_burn_plot + 
   geom_hline(yintercept = thr, linetype = "dashed")
