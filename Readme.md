@@ -184,3 +184,35 @@ D$MDSD_burn_plot +
 ![](MDSD_burn_hl.png)
 
 ## Example 2
+
+Function `cor_screening` can be used for fast hub screening,
+
+```r
+sol_path_ls <- cor_screening(Data$data, nlambda = nlambda)
+```
+Output of the function `cor_screening` works with the other functions of the `MDSD` package without modifications,
+```r
+mdsd_res <- hub_detection_mdsd(sol_path = sol_path_ls,
+                               gamma = gamma,
+                               skew_thr = skew_thr)
+
+mdsd_res$hub_nodes_MDSD
+mdsd_res$hub_nodes_MDSD_burn
+
+sort(true_hubs)
+
+D <- hub_detection_plot(data = mdsd_res)
+
+D$degree_plot
+
+D$MDSD_plot
+
+MDSD_data = D$mdsd_data
+
+thr = MDSD_data$MDSD_burn
+
+thr = gamma*mean(thr)
+
+D$MDSD_burn_plot + 
+  geom_hline(yintercept = thr, linetype = "dashed")
+```
