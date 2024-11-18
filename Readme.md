@@ -1,10 +1,10 @@
-# MDSD (The Mean Degree Squared Difference)
+# MDSD (The Mean Degree Squared Distance)
 
 ## Description
 
 The R package `MDSD` can be used to identify hubs using solution path information. The method is tested and compatible with `glasso`, `hglasso`, and `space` R packages. See the example below.
 
-For more details on the MDSD distance, please refer to: (link comming soon...) Supplementary data and code needed to reproduce the results reported in the article are available at: [https://github.com/markkukuismin/MDSD_supplementary](https://github.com/markkukuismin/MDSD_supplementary).
+For more details on the MDSD, please refer to: (link comming soon...) Supplementary data and code needed to reproduce the results reported in the article are available at: [https://github.com/markkukuismin/MDSD_supplementary](https://github.com/markkukuismin/MDSD_supplementary).
 
 ## Dependencies
 
